@@ -17,8 +17,8 @@ class BufferMonitor:
                 self.not_full.wait()
 
             self.buffer.append(item)
-            print(f"Produtor {produtor_id} produziu: {item} | Buffer: {self.buffer}\n")
-
+            print(f"Produtor {produtor_id} produziu: {item}")
+            print(f'Buffer: {self.buffer}\n')
             self.not_empty.notify()  
 
     def remover(self, consumidor_id):
@@ -28,7 +28,8 @@ class BufferMonitor:
                 self.not_empty.wait()
 
             item = self.buffer.pop(0)
-            print(f"Consumidor {consumidor_id} consumiu: {item} | Buffer: {self.buffer}\n")
+            print(f"Consumidor {consumidor_id} consumiu: {item}")
+            print(f'Buffer: {self.buffer}\n')
 
             self.not_full.notify()  
             return item
@@ -50,12 +51,12 @@ def consumidor(id):
         buffer_monitor.remover(id)
 
 
-for i in range(2):  
+for i in range(1):  
     t = threading.Thread(target=produtor, args=(i,))
     t.daemon = True
     t.start()
 
-for i in range(3):  
+for i in range(5):  
     t = threading.Thread(target=consumidor, args=(i,))
     t.daemon = True
     t.start()
